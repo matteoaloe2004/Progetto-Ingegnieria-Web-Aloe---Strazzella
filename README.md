@@ -10,14 +10,14 @@ Creazione di un sito web per un Centro Sportivo Unibo in cui gli utenti registra
 
 
 ## **Tecnologie utilizzate**
-### -XAMPP Control Panel (Per l’avvio di MySQL e accedere al Database e Apache per avviare il server web )
-### Node.js
-### Vue.js / Vue Router(Per componenti reattivi e gestione delle rotte)
-### Axios
-### Express.js
-###	Html
-###	Npm
-###	CSS / Bootstrap
-###	JavaScript
-###	CORS (Gestione della comunicazione cross-origin)
-###	Codeium ( Estensione Visual Studio Code )
+#### -XAMPP Control Panel (Per l’avvio di MySQL e accedere al Database e Apache per avviare il server web )
+#### Node.js
+#### Vue.js / Vue Router(Per componenti reattivi e gestione delle rotte)
+#### Axios
+#### Express.js
+####	Html
+####	Npm
+####	CSS / Bootstrap
+####	JavaScript
+####	CORS (Gestione della comunicazione cross-origin)
+####	Codeium ( Estensione Visual Studio Code )
