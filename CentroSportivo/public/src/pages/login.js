@@ -13,7 +13,7 @@ const Login = {
     <form class="login-form" @submit.prevent="loginUser">
       <div class="form-group">
         <label for="email">
-          <i class="fas fa-user"></i> Username
+          <i class="fas fa-user"></i> Email
         </label>
         <input type="email" id="email" v-model="email" placeholder="Inserisci la tua email" required />
       </div>

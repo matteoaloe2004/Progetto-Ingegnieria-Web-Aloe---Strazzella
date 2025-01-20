@@ -12,15 +12,15 @@ const Home = {
           <div class="row mt-5">
               <div class="col-12 col-md-6 offset-md-3 text-center">
                   <div class="image-container mb-4"></div>
-                  <p class="description mb-3">
+                  <p>
                       <i class="fas fa-heartbeat icon"></i>
-                      Il nostro centro sportivo nasce da una grande passione per lo sport e per la promozione di una cultura della salute e del benessere.
+                      Il nostro centro sportivo nasce da una grande passione per lo sport, al fine di assicurare la salute fisica e mentale.
                   </p>
-                  <p class="description mb-3">
+                  <p>
                       <i class="fas fa-users icon"></i>
-                      Offriamo diverse attività sportive e corsi per tutte le età e livelli. I nostri istruttori sono altamente qualificati.
+                      Offriamo un servizio di noleggio campi sportivi unico ed esclusivo, gestito da personale altamente qualificato e pronto a soddisfare le tue esigenze. Disponiamo dei migliori campi sportivi della zona, garantendo la massima sicurezza e comfort per te e per i tuoi compagni di squadra.
                   </p>
-                  <p class="description mb-3">
+                  <p>
                       <i class="fas fa-handshake icon"></i>
                       Speriamo di vederti presto al nostro centro sportivo!
                   </p>
@@ -30,12 +30,12 @@ const Home = {
           <!-- Sezione aggiuntiva (informazioni sui corsi e servizi) -->
           <div class="row mt-5">
               <div class="col-12 col-md-8 offset-md-2 text-center">
-                  <h3 class="mb-4">I nostri corsi e attività</h3>
+                  <h3 class="mb-4">I nostri campi e le nostre offerte</h3>
                   <p class="description mb-3">
-                      Siamo specializzati in una vasta gamma di attività, dai corsi di fitness a quelli per bambini, passando per sport individuali e di squadra. Ogni attività è pensata per soddisfare le esigenze di ogni partecipante, indipendentemente dall'età o dal livello di esperienza.
+                      Disponiamo di una vasta gamma di campi sportivi, accessibili per quasi tutti gli sport, disponibili durante tutto l'anno. Ogni campo è progettato per soddisfare le esigenze di ogni atleta, garantendo qualità e sicurezza in ogni stagione.
                   </p>
                   <p class="description mb-3">
-                      Offriamo lezioni di Calcio, Tennis, Basket, Nuoto e tanto altro, con l’obiettivo di migliorare la tua salute fisica e mentale in un ambiente stimolante e sicuro.
+                      Siamo sempre al passo con le novità sportive e offriamo un servizio personalizzato e personalizzato, garantendo la massima sicurezza e comfort per tutti gli sportisti.
                   </p>
                   <p class="description mb-4">
                      Sottostante puoi vedere alcuni dei nostri campi!
