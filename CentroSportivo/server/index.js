@@ -10,7 +10,6 @@ const prenotaRoutes = require('./routes/PrenotaRoutes');
 const app = express();
 const PORT = 3000;
 
-app.use('/images', express.static('images'));
 
 //creazione del middleware
 app.use(cors());
