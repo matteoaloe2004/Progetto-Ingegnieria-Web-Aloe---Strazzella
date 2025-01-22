@@ -40,7 +40,7 @@ CREATE TABLE `campi` (
 --
 
 INSERT INTO `campi` (`id`, `nome`, `tipo`, `descrizione`, `costo_ora`) VALUES
-(1, 'Campo Calcio 1', 'Calcio', 'Campo di calcio regolamentare in erba sintetica.', 50.00),
+(1, 'Campo da Calcio 1', 'Calcio', 'Campo di calcio da 8 a 9 giocatori in erba sintetica.', 50.00),
 (2, 'Campo Tennis A', 'Tennis', 'Campo da tennis con illuminazione notturna.', 25.00),
 (3, 'Palestra Indoor', 'Palestra', 'Spazio indoor attrezzato per attività multiple.', 30.00),
 (4, 'Piscina Estiva', 'Piscina', 'Piscina all’aperto con vista panoramica.', 40.00),

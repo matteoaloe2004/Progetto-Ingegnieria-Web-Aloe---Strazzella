@@ -1,5 +1,5 @@
 const express = require('express');
-const { getAllActivity } = require('../controllers/attivitacontroller');
+const { getAllActivity } = require('../controllers/campicontroller');
 const router = express.Router();
 
 router.get('/', getAllActivity); // Usa '/' per indicare la root del percorso

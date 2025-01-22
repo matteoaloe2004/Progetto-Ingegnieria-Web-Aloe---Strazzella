@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors'); //middleware
 const bodyParser = require('body-parser');
 const path = require('path');
-const attivitaRoutes = require('./routes/attivitaRoutes');
+const campiRoutes = require('./routes/campiRoutes');
 const loginRoutes = require('./routes/loginRoutes');
 const registerRoutes = require('./routes/registerRoutes');
 const prenotaRoutes = require('./routes/PrenotaRoutes');
@@ -24,7 +24,7 @@ app.get('/', (req, res) => {
 
 
 
-app.use('/api/attivita', attivitaRoutes);
+app.use('/api/campi', campiRoutes);
 app.use('/api', loginRoutes);
 app.use('/api/register', registerRoutes);
 app.use('/api/prenota', prenotaRoutes);

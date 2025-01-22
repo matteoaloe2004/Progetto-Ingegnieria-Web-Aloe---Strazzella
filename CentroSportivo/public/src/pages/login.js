@@ -2,13 +2,7 @@ const Login = {
   template: `
     <div class="login-container">
     <div class="header">
-      <h1>Centro Sportivo Unibo</h1>
-      <div class="tabs">
-        <button class="tab active">Accedi</button>
-        <router-link to="/register" class="tab">
-          <button>Registrati</button>
-        </router-link>
-      </div>
+      <h1>Ti Aspettiamo!</h1>
     </div>
     <form class="login-form" @submit.prevent="loginUser">
       <div class="form-group">
@@ -28,6 +22,11 @@ const Login = {
         <label for="remember">Ricordami</label>
       </div>
       <button type="submit" class="btn-login">Accedi</button>
+      <div class="tabs">
+        <router-link to="/register" class="tab">
+          <button>Registrati</button>
+        </router-link>
+      </div>
     </form>
   </div>
   `,

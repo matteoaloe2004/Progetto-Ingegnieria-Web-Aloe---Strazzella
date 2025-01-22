@@ -2,19 +2,31 @@ const db = require('../db');
 
 // Ottieni tutte le prenotazioni
 const getAllPrenotazioni = (req, res) => {
-    const query = `
+    const { campo_id } = req.query; // Recupera il filtro da query string
+
+    let query = `
         SELECT 
             prenotazioni.id, 
             prenotazioni.data_prenotazione, 
             prenotazioni.orario_inizio, 
             prenotazioni.orario_fine, 
             utenti.username, 
-            campi.nome AS campo 
+            campi.nome AS campo,
+            prenotazioni.campo_id 
         FROM prenotazioni
         JOIN utenti ON prenotazioni.utente_id = utenti.id
         JOIN campi ON prenotazioni.campo_id = campi.id
     `;
-    db.query(query, (err, results) => {
+    
+    const params = [];
+
+    // Applica il filtro se campo_id è presente
+    if (campo_id) {
+        query += ` WHERE prenotazioni.campo_id = ?`;
+        params.push(campo_id);
+    }
+
+    db.query(query, params, (err, results) => {
         if (err) {
             console.error('Errore nella query per ottenere tutte le prenotazioni:', err);
             return res.status(500).json({ error: 'Errore nel server durante la lettura delle prenotazioni.' });

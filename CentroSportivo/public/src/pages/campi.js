@@ -1,4 +1,4 @@
-const Attivita = {
+const campi = {
     data() {
         return {
             activities: []
@@ -6,7 +6,7 @@ const Attivita = {
     },
     template: `
         <div class="container">
-            <h1 class="text-center mt-5">Le Nostre Attività</h1>
+            <h1 class="text-center mt-5">I nostri Campi</h1>
             <div v-if="activities.length" class="row mt-5">
                 <div v-for="activity in activities" :key="activity.id" class="col-12 col-md-6 mb-4">
                     <div class="card">
@@ -20,7 +20,7 @@ const Attivita = {
                 </div>
             </div>
             <div v-else class="text-center mt-5">
-                <p>Nessuna attività disponibile al momento.</p>
+                <p>Nessun campo disponibile al momento.</p>
             </div>
         </div>
     `,
@@ -29,13 +29,13 @@ const Attivita = {
     },
     methods: {
         fetchActivities() {
-            axios.get('/api/attivita')
+            axios.get('/api/campi')
                 .then(response => {
                     console.log('Dati ricevuti dal server:', response.data);
                     this.activities = response.data;
                 })
                 .catch(error => {
-                    console.error('Errore nel caricamento delle attività:', error);
+                    console.error('Errore nel caricamento dei campi:', error);
                     if (error.response) {
                         console.error('Errore nella risposta del server:', error.response.data);
                         console.error('Codice di stato:', error.response.status);
@@ -50,5 +50,5 @@ const Attivita = {
     }
 };
 
-export default Attivita;
+export default campi;
 

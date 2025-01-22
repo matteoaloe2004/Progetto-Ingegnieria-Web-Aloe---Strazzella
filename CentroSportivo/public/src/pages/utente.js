@@ -4,6 +4,11 @@ const Utente = {
       <h1>Bentornato, <span class="username">{{ username }}</span>!</h1>
       <h3>Cosa vuoi fare?</h3>
 
+      <!-- Messaggio di stato -->
+      <div v-if="message" class="alert" :class="message.type">
+        {{ message.text }}
+      </div>
+
       <div class="text-center mx-2 my-3">
         <router-link to="/prenota">
           <button type="button" class="btn btn-primary btn-sm">Prenota il tuo Campo</button>
@@ -15,6 +20,7 @@ const Utente = {
       </div>
 
       <h2 class="my-4">Le tue prenotazioni</h2>
+
       <table class="table table-striped">
         <thead>
           <tr>
@@ -26,19 +32,22 @@ const Utente = {
           </tr>
         </thead>
         <tbody>
-          <tr v-for="prenotazione in prenotazioni" :key="prenotazione.id">
+          <tr
+            v-for="prenotazione in prenotazioni"
+            :key="prenotazione.id"
+          >
             <td>{{ formatData(prenotazione.data_prenotazione) }}</td>
             <td>{{ prenotazione.orario_inizio }}</td>
             <td>{{ prenotazione.orario_fine }}</td>
             <td>{{ prenotazione.campo }}</td>
             <td>
-              <button 
+              <button
                 class="btn btn-danger btn-sm me-2"
-                @click="eliminaPrenotazione(prenotazione.id)"
+                @click="eliminaPrenotazione(prenotazione)"
               >
                 Elimina
               </button>
-              <button 
+              <button
                 class="btn btn-primary btn-sm"
                 @click="aggiornaPrenotazione(prenotazione)"
               >
@@ -47,7 +56,9 @@ const Utente = {
             </td>
           </tr>
           <tr v-if="prenotazioni.length === 0">
-            <td colspan="5" class="text-center">Nessuna prenotazione trovata.</td>
+            <td colspan="5" class="text-center">
+              Nessuna prenotazione trovata.
+            </td>
           </tr>
         </tbody>
       </table>
@@ -56,66 +67,54 @@ const Utente = {
   data() {
     return {
       username: '',
-      prenotazioni: [] // Array per le prenotazioni dell'utente
+      prenotazioni: [], // Prenotazioni attive
+      message: null, // Messaggio da visualizzare
     };
   },
   created() {
     this.username = localStorage.getItem('username') || 'Utente';
-    this.caricaPrenotazioni(); // Carica le prenotazioni al caricamento del componente
+    this.caricaPrenotazioni(); // Carica le prenotazioni attive
   },
   methods: {
-    // Carica le prenotazioni dell'utente
     caricaPrenotazioni() {
-      const url = `/api/prenota/utente/prenotazioni?username=${this.username}`;
+      const urlAttive = `/api/prenota/utente/prenotazioni?username=${this.username}&stato=attive`;
+
       axios
-        .get(url)
+        .get(urlAttive)
         .then((response) => {
           this.prenotazioni = response.data;
         })
         .catch((error) => {
-          console.error('Errore durante il recupero delle prenotazioni:', error);
-          alert('Non è stato possibile caricare le prenotazioni.');
+          console.error('Errore durante il recupero delle prenotazioni attive:', error);
+          this.showMessage('Errore durante il recupero delle prenotazioni attive.', 'alert-danger');
         });
     },
-
-    // Funzione per formattare la data in formato italiano
-    formatData(data) {
-      const date = new Date(data); // Converte la data in un oggetto Date
-      return date.toLocaleDateString('it-IT'); // Formato italiano
+    eliminaPrenotazione(prenotazione) {
+      axios
+        .delete(`/api/prenota/${prenotazione.id}`)
+        .then(() => {
+          this.caricaPrenotazioni(); // Aggiorna le prenotazioni attive
+          this.showMessage('Prenotazione eliminata con successo.', 'alert-success');
+        })
+        .catch((error) => {
+          console.error('Errore durante l\'eliminazione della prenotazione:', error);
+          this.showMessage('Non è stato possibile eliminare la prenotazione.', 'alert-danger');
+        });
     },
-
-    // Effettua il logout
     logout() {
       localStorage.removeItem('username');
       localStorage.removeItem('role');
-      localStorage.removeItem('prenotazione');
-      alert('Logout effettuato con successo!');
       this.$router.push('/login');
     },
-
-    // Elimina una prenotazione
-    eliminaPrenotazione(id) {
-      if (confirm('Sei sicuro di voler eliminare questa prenotazione?')) {
-        axios
-          .delete(`/api/prenota/${id}`)
-          .then(() => {
-            alert('Prenotazione eliminata con successo.');
-            this.caricaPrenotazioni(); // Ricarica la lista delle prenotazioni
-          })
-          .catch((error) => {
-            console.error('Errore durante l\'eliminazione della prenotazione:', error);
-            alert('Non è stato possibile eliminare la prenotazione.');
-          });
-      }
+    formatData(data) {
+      const date = new Date(data);
+      return date.toLocaleDateString('it-IT');
     },
-
-    // Aggiorna una prenotazione
     aggiornaPrenotazione(prenotazione) {
       const nuovaData = prompt('Inserisci la nuova data della prenotazione (YYYY/MM/DD):', prenotazione.data_prenotazione);
       const nuovoOrarioInizio = prompt('Inserisci il nuovo orario di inizio (HH:MM):', prenotazione.orario_inizio);
       const nuovoOrarioFine = prompt('Inserisci il nuovo orario di fine (HH:MM):', prenotazione.orario_fine);
       
-      // Verifica che tutti i campi siano stati inseriti
       if (nuovaData && nuovoOrarioInizio && nuovoOrarioFine) {
         const updatedPrenotazione = {
           id: prenotazione.id,
@@ -123,27 +122,21 @@ const Utente = {
           orario_inizio: nuovoOrarioInizio,
           orario_fine: nuovoOrarioFine
         };
-    
-        console.log('Dati inviati per l\'aggiornamento della prenotazione:', updatedPrenotazione);
-    
-        axios
         axios.put(`/api/prenota/${prenotazione.id}`, updatedPrenotazione)
           .then(() => {
-            alert('Prenotazione aggiornata con successo.');
             this.caricaPrenotazioni(); // Ricarica la lista delle prenotazioni
+            this.showMessage('Prenotazione aggiornata con successo.', 'alert-success');
           })
           .catch((error) => {
             console.error('Errore durante l\'aggiornamento della prenotazione:', error);
-            
-            // Aggiungi un controllo per verificare se l'errore riguarda la risposta del server
-            if (error.response && error.response.data) {
-              alert(`Errore: ${error.response.data.error}`);
-            } else {
-              alert('Non è stato possibile aggiornare la prenotazione.');
-            }
+            this.showMessage('Non è stato possibile aggiornare la prenotazione.', 'alert-danger');
           });
       }
     },
+    showMessage(text, type) {
+      this.message = { text, type }; // Aggiunge il messaggio alla proprietà 'message'
+      setTimeout(() => { this.message = null; }, 5000); // Rimuove il messaggio dopo 5 secondi
+    }
   },
 };
 

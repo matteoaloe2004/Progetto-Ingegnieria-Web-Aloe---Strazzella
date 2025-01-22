@@ -2,22 +2,33 @@ const Register = {
   template: `
     <div class="login-container container-fluid mt-4 mb-4">
       <form @submit.prevent="registerUser" class="login-form">
-        <label for="nome">Nome</label>
+        <label class="form-label" for="nome">Nome</label>
         <input type="text" id="nome" v-model="nome" placeholder="Inserisci il tuo nome" required />
 
-        <label for="cognome">Cognome</label>
+        <label class="form-label" for="cognome">Cognome</label>
         <input type="text" id="cognome" v-model="cognome" placeholder="Inserisci il tuo cognome" required />
 
-        <label for="username">UserName</label>
+        <label class="form-label" for="username">Username</label>
         <input type="text" id="username" v-model="username" placeholder="Inserisci il tuo username" required />
 
-        <label for="email">Email</label>
+        <label class="form-label" for="email">Email</label>
         <input type="email" id="email" v-model="email" placeholder="Inserisci la tua email" required />
 
-        <label for="password">Password</label>
-        <input class="input" type="password" id="password" v-model="password" placeholder="Inserisci la tua password" required />
+        <label class="form-label" for="password">Password</label>
+        <input 
+          class="input" 
+          type="password" 
+          id="password" 
+          v-model="password" 
+          placeholder="Inserisci la tua password" 
+          minlength="8" 
+          required 
+        />
+        <small class="form-text text-muted">La password deve contenere almeno 8 caratteri.</small>
 
-        <button type="submit" class="btn-register">REGISTRATI</button>
+        <div class="tabs">
+          <button type="submit" class="tab">REGISTRATI</button>
+        </div>
 
         <p class="separator mt-4">Oppure</p>
 
@@ -26,35 +37,46 @@ const Register = {
             <button type="button" class="btn btn-outline-primary">Torna indietro</button>
           </router-link>
         </div>
+
+        <!-- Messaggi di feedback -->
+        <div v-if="feedbackMessage" :class="feedbackClass" class="feedback-message mt-4">
+          {{ feedbackMessage }}
+        </div>
       </form>
     </div>
   `,
 
-  data() { //variabili vuote
+  data() {
     return {
       email: '',
       username: '',
       password: '',
       nome: '',
-      cognome: ''
+      cognome: '',
+      feedbackMessage: '', // Messaggio di feedback
+      feedbackClass: '' // Classe per il tipo di messaggio
     };
   },
 
   methods: {
     async registerUser() {
       try {
-        const response = await axios.post('http://localhost:3000/api/register', { //chiamata con axios all'api nel 'index.js che collega alla rotta e poi al controller
+        const response = await axios.post('http://localhost:3000/api/register', {
           email: this.email,
           username: this.username,
           password: this.password,
           nome: this.nome,
-          cognome: this.cognome //dati passati
+          cognome: this.cognome
         });
-        alert('Registrazione avvenuta con successo!');
-        this.$router.push('/login'); //sposta in pagina di login
+
+        // Mostra un messaggio di successo
+        this.feedbackMessage = 'Registrazione avvenuta con successo!';
+        this.feedbackClass = 'alert alert-success';
+        setTimeout(() => this.$router.push('/login'), 2000); // Reindirizza dopo 2 secondi
       } catch (error) {
-        console.error('Errore durante la registrazione:', error.response?.data || error.message);
-        alert(error.response?.data?.message || 'Errore durante la registrazione. Riprova!');
+        // Mostra il messaggio di errore
+        this.feedbackMessage = error.response?.data?.message || 'Errore durante la registrazione. Riprova!';
+        this.feedbackClass = 'alert alert-danger';
       }
     }
   }

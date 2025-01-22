@@ -1,6 +1,6 @@
 import Home from './pages/Home.js';
 import Aboutus from './pages/Aboutus.js';
-import Attivita from './pages/Attivita.js';
+import Campi from './pages/campi.js';
 import Login from './pages/login.js';
 import Prenota from './pages/prenota.js';
 import register from './pages/register.js';
@@ -15,7 +15,7 @@ const auth = {
  // oppure createWebHistory
  const routes = [
     { path: '/', component: Home },
-    { path: '/attivita', component: Attivita },
+    { path: '/campi', component: Campi },
     { path: '/prenota', component: Prenota },
     { path: '/Login', component: Login },
     { path: '/Aboutus', component: Aboutus },
