@@ -22,7 +22,12 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../public', 'index.html'));
 });
 
-
+app.get('/utente/prenotazioni/storico', (req, res) => {
+    const username = req.query.username;
+    // Recupera le prenotazioni storiche dell'utente
+    const prenotazioniStoriche = getPrenotazioniStoricheByUsername(username);
+    res.json(prenotazioniStoriche);
+  });
 
 app.use('/api/campi', campiRoutes);
 app.use('/api', loginRoutes);

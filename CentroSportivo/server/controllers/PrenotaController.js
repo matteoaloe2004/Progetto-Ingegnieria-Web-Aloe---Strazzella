@@ -219,6 +219,34 @@ const getPrenotazioniByUsername = (req, res) => {
         res.json(results);
     });
 };
+const getPrenotazioniStoricheByUsername = (req, res) => {
+    const username = req.query.username;
+
+    if (!username) {
+        return res.status(400).json({ error: 'Username non fornito.' });
+    }
+
+    const query = `
+      SELECT 
+        prenotazioni_archivio.id, 
+        prenotazioni_archivio.data_prenotazione, 
+        prenotazioni_archivio.orario_inizio, 
+        prenotazioni_archivio.orario_fine, 
+        campi.nome AS campo
+      FROM prenotazioni_archivio
+      JOIN utenti ON prenotazioni_archivio.utente_id = utenti.id
+      JOIN campi ON prenotazioni_archivio.campo_id = campi.id
+      WHERE utenti.username = ?
+    `;
+
+    db.query(query, [username], (err, results) => {
+      if (err) {
+        console.error('Errore nella query per ottenere le prenotazioni storiche:', err);
+        return res.status(500).json({ error: 'Errore nel server durante la lettura delle prenotazioni storiche.' });
+      }
+      res.json(results);
+    });
+};
 
 module.exports = {
     getAllPrenotazioni,
@@ -226,5 +254,6 @@ module.exports = {
     addPrenotazione,
     deletePrenotazione,
     updatePrenotazione,
-    getPrenotazioniByUsername, // Esportazione della funzione aggiunta
+    getPrenotazioniByUsername,
+    getPrenotazioniStoricheByUsername, // Esportazione della funzione aggiunta
 };

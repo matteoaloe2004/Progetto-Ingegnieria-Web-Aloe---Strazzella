@@ -105,9 +105,37 @@ INSERT INTO `utenti` (`id`, `username`, `nome`, `cognome`, `password`, `email`, 
 (20, 'HaloWassupp', 'matteo', 'Aloe', '$2b$10$/MuXO3ZxBUmGcFgYIuhhM.8Xqdf3GB.iHCetz7t1k0L/sLYXq7ARK', 'matteoaloe2004@libero.it', '2025-01-19 16:11:22'),
 (28, 'matteoAloe', 'matteo', 'marchiello', '$2b$10$XDwVaODB8xXIyfiQPlYUk.SwMawFuVdNmG7x7/8SuDYSPyxZAASqe', 'mgmt.halobeats@gmail.com', '2025-01-20 13:23:40');
 
---
--- Indici per le tabelle scaricate
---
+-- Creazione della tabella per l'archivio storico delle prenotazioni
+CREATE TABLE `prenotazioni_archivio` (
+  `id` int(11) NOT NULL,
+  `Username` varchar(255) NOT NULL,
+  `utente_id` int(11) NOT NULL,
+  `campo_id` int(11) NOT NULL,
+  `data_prenotazione` date NOT NULL,
+  `orario_inizio` time NOT NULL,
+  `orario_fine` time NOT NULL,
+  `data_eliminazione` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Indici per la tabella `prenotazioni_archivio`
+ALTER TABLE `prenotazioni_archivio`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `utente_id` (`utente_id`),
+  ADD KEY `campo_id` (`campo_id`);
+
+-- AUTO_INCREMENT per la tabella `prenotazioni_archivio`
+ALTER TABLE `prenotazioni_archivio`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+-- Modifica della tabella `prenotazioni` per aggiungere un trigger
+DELIMITER //
+CREATE TRIGGER `before_delete_prenotazioni`
+BEFORE DELETE ON `prenotazioni` FOR EACH ROW
+BEGIN
+  INSERT INTO `prenotazioni_archivio` (`id`, `Username`, `utente_id`, `campo_id`, `data_prenotazione`, `orario_inizio`, `orario_fine`)
+  VALUES (OLD.`id`, OLD.`Username`, OLD.`utente_id`, OLD.`campo_id`, OLD.`data_prenotazione`, OLD.`orario_inizio`, OLD.`orario_fine`);
+END//
+DELIMITER ;
 
 --
 -- Indici per le tabelle `campi`

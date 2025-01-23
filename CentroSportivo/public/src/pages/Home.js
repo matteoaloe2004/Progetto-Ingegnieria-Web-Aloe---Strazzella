@@ -33,7 +33,6 @@ const Home = {
             </div>
           </div>
           <p>
-          <p>
             Il nostro centro sportivo nasce da una grande passione per lo sport, al fine di assicurare la salute fisica e mentale.
           </p>
           <p>

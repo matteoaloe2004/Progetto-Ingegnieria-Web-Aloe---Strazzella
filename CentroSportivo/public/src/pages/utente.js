@@ -62,18 +62,49 @@ const Utente = {
           </tr>
         </tbody>
       </table>
+
+      <h2 class="my-4">Storico Prenotazioni</h2>
+
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Data</th>
+            <th>Orario Inizio</th>
+            <th>Orario Fine</th>
+            <th>Campo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            v-for="prenotazioneStorica in prenotazioniStoriche"
+            :key="prenotazioneStorica.id"
+          >
+            <td>{{ formatData(prenotazioneStorica.data_prenotazione) }}</td>
+            <td>{{ prenotazioneStorica.orario_inizio }}</td>
+            <td>{{ prenotazioneStorica.orario_fine }}</td>
+            <td>{{ prenotazioneStorica.campo }}</td>
+          </tr>
+          <tr v-if="prenotazioniStoriche.length === 0">
+            <td colspan="4" class="text-center">
+              Nessuna prenotazione storica trovata.
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   `,
   data() {
     return {
       username: '',
       prenotazioni: [], // Prenotazioni attive
+      prenotazioniStoriche: [],
       message: null, // Messaggio da visualizzare
     };
   },
   created() {
     this.username = localStorage.getItem('username') || 'Utente';
     this.caricaPrenotazioni(); // Carica le prenotazioni attive
+    this.recuperaPrenotazioniStoriche();
   },
   methods: {
     caricaPrenotazioni() {
@@ -136,9 +167,20 @@ const Utente = {
     showMessage(text, type) {
       this.message = { text, type }; // Aggiunge il messaggio alla proprietà 'message'
       setTimeout(() => { this.message = null; }, 5000); // Rimuove il messaggio dopo 5 secondi
-    }
+    },
+    recuperaPrenotazioniStoriche() {
+      const urlStorico = `api/prenota/utente/prenotazioni/storico?username=${this.username}`;
+      axios
+          .get(urlStorico)
+          .then((response) => {
+              this.prenotazioniStoriche = response.data;
+          })
+          .catch((error) => {
+              console.error('Errore durante il recupero delle prenotazioni storiche:', error);
+              this.showMessage('Errore durante il recupero delle prenotazioni storiche.', 'alert-danger');
+          });
+  },
   },
 };
 
 export default Utente;
-

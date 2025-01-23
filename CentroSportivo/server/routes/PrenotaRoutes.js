@@ -20,4 +20,7 @@ router.put('/:id', prenotazioniController.updatePrenotazione);
 // Ottieni tutte le prenotazioni di un utente tramite username
 router.get('/utente/prenotazioni', prenotazioniController.getPrenotazioniByUsername);
 
+// CentroSportivo/server/routes/PrenotaRoutes.js
+router.get('/utente/prenotazioni/storico', prenotazioniController.getPrenotazioniStoricheByUsername);
+
 module.exports = router;
