@@ -17,18 +17,18 @@ const Home = {
                data-bs-interval="2500" 
                data-bs-pause="false" 
                style="pointer-events: none;">
-            <div class="carousel-inner" style="width: 100%; height: 400px;">
+            <div class="carousel-inner">
               <div class="carousel-item active">
-                <img src="/png/CentroSportivo.jpg" class="d-block w-100" style="height: 100%; object-fit: cover;" alt="Centro Sportivo">
+                <img src="/png/CentroSportivo.jpg" class="d-block w-100" style="height: 400px; object-fit: cover;" alt="Centro Sportivo">
               </div>
               <div class="carousel-item">
-                <img src="/png/CentroSportivo2.jpg" class="d-block w-100" style="height: 100%; object-fit: cover;" alt="Centro Sportivo 2">
+                <img src="/png/CentroSportivo2.jpg" class="d-block w-100" style="height: 400px; object-fit: cover;" alt="Centro Sportivo 2">
               </div>
               <div class="carousel-item">
-                <img src="/png/CampoCalcioCarosello.jpg" class="d-block w-100" style="height: 100%; object-fit: cover;" alt="Campo da Calcio">
+                <img src="/png/CampoCalcioCarosello.jpg" class="d-block w-100" style="height: 400px; object-fit: cover;" alt="Campo da Calcio">
               </div>
               <div class="carousel-item">
-                <img src="/png/CampoPallavoloCarosello.jpg" class="d-block w-100" style="height: 100%; object-fit: cover;" alt="Campo da Pallavolo">
+                <img src="/png/CampoPallavoloCarosello.jpg" class="d-block w-100" style="height: 400px; object-fit: cover;" alt="Campo da Pallavolo">
               </div>
             </div>
           </div>

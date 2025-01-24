@@ -48,11 +48,21 @@ const Prenota = {
         <!-- Parte destra: Prenotazioni esistenti -->
         <div class="col-md-6">
           <h2 class="text-center">Prenotazioni esistenti</h2>
-          <div v-if="prenotazioni.length === 0" class="text-center mt-3">
+
+          <!-- Filtro per campo -->
+          <div class="mb-3">
+            <label for="campoFiltro" class="form-label">Filtra per Attività</label>
+            <select id="campoFiltro" v-model="campoFiltro" class="form-select">
+              <option value="">Tutte le attività</option>
+              <option v-for="campo in campi" :key="campo.id" :value="campo.id">{{ campo.nome }}</option>
+            </select>
+          </div>
+
+          <div v-if="filteredPrenotazioni.length === 0" class="text-center mt-3">
             <p>Nessuna prenotazione trovata.</p>
           </div>
           <div v-else class="list-group">
-            <li v-for="prenotazione in prenotazioni" :key="prenotazione.id" class="list-group-item">
+            <li v-for="prenotazione in filteredPrenotazioni" :key="prenotazione.id" class="list-group-item">
               <p><strong>Utente:</strong> {{ prenotazione.username }}</p>
               <p><strong>Campo:</strong> {{ prenotazione.campo }}</p>
               <p><strong>Data:</strong> {{ formatDate(prenotazione.data_prenotazione) }}</p>
@@ -73,6 +83,7 @@ const Prenota = {
       },
       campi: [], // Lista delle attività dal database
       prenotazioni: [], // Lista delle prenotazioni dal database
+      campoFiltro: '', // Nuova variabile per il filtro
       notification: { message: '', type: '' }, // Nuovo oggetto per notifiche
       isSubmitting: false,
       minDate: '', // Variabile per la data minima
@@ -159,6 +170,16 @@ const Prenota = {
     formatDate(dateString) {
       const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
       return new Date(dateString).toLocaleDateString('it-IT', options);
+    },
+  },
+  computed: {
+    filteredPrenotazioni() {
+      if (!this.campoFiltro) {
+        return this.prenotazioni;
+      }
+      return this.prenotazioni.filter(
+        (prenotazione) => prenotazione.campo_id === this.campoFiltro
+      );
     },
   },
   mounted() {
