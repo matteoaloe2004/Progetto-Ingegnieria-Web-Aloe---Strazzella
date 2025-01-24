@@ -23,4 +23,6 @@ router.get('/utente/prenotazioni', prenotazioniController.getPrenotazioniByUsern
 // CentroSportivo/server/routes/PrenotaRoutes.js
 router.get('/utente/prenotazioni/storico', prenotazioniController.getPrenotazioniStoricheByUsername);
 
+router.get('/disponibilita', prenotazioniController.getDisponibilita);
+
 module.exports = router;

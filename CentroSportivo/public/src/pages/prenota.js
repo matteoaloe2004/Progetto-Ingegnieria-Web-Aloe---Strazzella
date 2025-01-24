@@ -3,8 +3,8 @@ const Prenota = {
     <div class="container">
       <div class="row">
         <div class="col-12 text-center mt-5">
-          <h1>Prenota un'attività</h1>
-          <p>Scegli l'attività sportiva che preferisci e prenota il tuo posto.</p>
+          <h1>Prenota un Campo</h1>
+          <p>Scegli il Campo sportivo che preferisci e prenota il tuo posto.</p>
         </div>
       </div>
       <div class="row mt-5">
@@ -12,15 +12,26 @@ const Prenota = {
         <div class="col-md-5">
           <form @submit.prevent="prenotaAttivita" class="form.prenota">
             <div class="mb-3">
-              <label for="activity" class="form-label">Attività</label>
+              <label for="activity" class="form-label">Campi Disponibili</label>
               <select id="activity" v-model="prenotazione.campo_id" class="form-select" required>
-                <option value="">Seleziona un'attività</option>
+                <option value="">Seleziona un Campo</option>
                 <option v-for="campo in campi" :key="campo.id" :value="campo.id">{{ campo.nome }}</option>
               </select>
             </div>
             <div class="mb-3">
               <label for="date" class="form-label">Data</label>
-              <input type="date" v-model="prenotazione.data_prenotazione" class="form-control" :min="minDate" required>
+              <input type="date" v-model="prenotazione.data_prenotazione" @change="checkDisponibilita" class="form-control" :min="minDate" required>
+            </div>
+            <div v-if="disponibilita.length > 0" class="mb-3">
+              <h5>Fascie Orarie Occupate per il {{ prenotazione.data_prenotazione }}</h5>
+              <ul class="list-group">
+                <li v-for="slot in disponibilita" :key="slot.id" class="list-group-item">
+                  <strong>Orario:</strong> {{ slot.orario_inizio }} - {{ slot.orario_fine }}
+                </li>
+              </ul>
+            </div>
+            <div v-else-if="prenotazione.campo_id && prenotazione.data_prenotazione" class="mb-3">
+              <p class="text-success">Il campo è disponibile per l'intera giornata.</p>
             </div>
             <div class="mb-3">
               <label for="startTime" class="form-label">Orario Inizio</label>
@@ -51,7 +62,7 @@ const Prenota = {
 
           <!-- Filtro per campo -->
           <div class="mb-3">
-            <label for="campoFiltro" class="form-label">Filtra per Attività</label>
+            <label for="campoFiltro" class="form-label">Filtra per Campo</label>
             <select id="campoFiltro" v-model="campoFiltro" class="form-select">
               <option value="">Tutte le attività</option>
               <option v-for="campo in campi" :key="campo.id" :value="campo.id">{{ campo.nome }}</option>
@@ -83,6 +94,7 @@ const Prenota = {
       },
       campi: [], // Lista delle attività dal database
       prenotazioni: [], // Lista delle prenotazioni dal database
+      disponibilita: [], // Orari occupati per il campo selezionato e la data
       campoFiltro: '', // Nuova variabile per il filtro
       notification: { message: '', type: '' }, // Nuovo oggetto per notifiche
       isSubmitting: false,
@@ -165,6 +177,36 @@ const Prenota = {
         }
       } catch {
         this.campi = [];
+      }
+    },
+    async checkDisponibilita() {
+      // Reset della lista disponibilità
+      this.disponibilita = [];
+    
+      // Verifica che i campi richiesti siano stati selezionati
+      if (!this.prenotazione.campo_id || !this.prenotazione.data_prenotazione) {
+        console.log('Campo o data non selezionati.');
+        return;
+      }
+    
+      console.log(`Verifica disponibilità per campo: ${this.prenotazione.campo_id} e data: ${this.prenotazione.data_prenotazione}`);
+    
+      try {
+        const response = await fetch(`/api/prenota?disponibilita&campo_id=${this.prenotazione.campo_id}&data_prenotazione=${this.prenotazione.data_prenotazione}`);
+        console.log('Risposta dal server:', response);
+    
+        if (response.ok) {
+          const data = await response.json();
+          console.log('Dati di disponibilità ricevuti:', data);
+          this.disponibilita = data;
+        } else {
+          console.error("Errore nel recuperare la disponibilità: risposta non ok.");
+          console.error('Status Code:', response.status);
+          const errorData = await response.json();
+          console.error('Dettagli errore:', errorData);
+        }
+      } catch (error) {
+        console.error("Errore nella comunicazione con il server:", error);
       }
     },
     formatDate(dateString) {

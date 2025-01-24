@@ -247,7 +247,40 @@ const getPrenotazioniStoricheByUsername = (req, res) => {
       res.json(results);
     });
 };
-
+// Aggiungi questo metodo al file PrenotaController.js
+const getDisponibilita = (req, res) => {
+    const { campo_id, data } = req.query;
+  
+    console.log("Parametro campo_id:", campo_id);
+    console.log("Parametro data:", data);
+  
+    if (!campo_id || !data) {
+      return res.status(400).json({ error: 'Tutti i parametri sono obbligatori.' });
+    }
+  
+    const query = `
+      SELECT 
+        prenotazioni.id, 
+        prenotazioni.orario_inizio, 
+        prenotazioni.orario_fine
+      FROM prenotazioni
+      WHERE prenotazioni.campo_id = ? AND prenotazioni.data_prenotazione = ?
+    `;
+    
+    db.query(query, [campo_id, data], (err, results) => {
+      if (err) {
+        console.error('Errore nella query per recuperare la disponibilità:', err);
+        return res.status(500).json({ error: 'Errore nel server durante la lettura della disponibilità.' });
+      }
+  
+      if (results.length === 0) {
+        return res.status(404).json({ error: 'Nessuna disponibilità trovata per il campo e la data selezionati.' });
+      }
+  
+      res.json(results);
+    });
+  };
+  
 module.exports = {
     getAllPrenotazioni,
     getPrenotazioneById,
@@ -255,5 +288,6 @@ module.exports = {
     deletePrenotazione,
     updatePrenotazione,
     getPrenotazioniByUsername,
-    getPrenotazioniStoricheByUsername, // Esportazione della funzione aggiunta
+    getPrenotazioniStoricheByUsername,
+    getDisponibilita, // Esportazione della funzione aggiunta
 };
