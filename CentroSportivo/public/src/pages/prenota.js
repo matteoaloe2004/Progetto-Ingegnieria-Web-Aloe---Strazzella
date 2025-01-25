@@ -64,7 +64,7 @@ const Prenota = {
           <div class="mb-3">
             <label for="campoFiltro" class="form-label">Filtra per Campo</label>
             <select id="campoFiltro" v-model="campoFiltro" class="form-select">
-              <option value="">Tutte le attività</option>
+              <option value="">Tutti i Campi</option>
               <option v-for="campo in campi" :key="campo.id" :value="campo.id">{{ campo.nome }}</option>
             </select>
           </div>

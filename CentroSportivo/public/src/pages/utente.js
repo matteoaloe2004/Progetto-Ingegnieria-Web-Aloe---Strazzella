@@ -14,9 +14,7 @@ const Utente = {
           <button type="button" class="btn btn-primary btn-sm">Prenota il tuo Campo</button>
         </router-link>
 
-        <router-link to="/login">
           <button type="button" class="btn btn-danger btn-sm me-2" @click="logout">Logout</button>
-        </router-link>
       </div>
 
       <h2 class="my-4">Le tue prenotazioni</h2>
@@ -219,7 +217,12 @@ const Utente = {
     logout() {
       localStorage.removeItem('username');
       localStorage.removeItem('role');
-      this.$router.push('/login');
+      this.showMessage('Logout effettuato con successo.', 'alert-success'); // Mostra il messaggio
+      
+      // Aspetta 3 secondi (ad esempio) prima di fare il reindirizzamento
+      setTimeout(() => {
+        this.$router.push('/login'); // Reindirizza alla pagina di login
+      }, 3000); // 3000 millisecondi (3 secondi)
     },
 
     // Formatta la data
