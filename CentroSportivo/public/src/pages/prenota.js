@@ -23,13 +23,15 @@ const Prenota = {
               <input type="date" v-model="prenotazione.data_prenotazione" @change="checkDisponibilita" class="form-control" :min="minDate" required>
             </div>
             <div v-if="disponibilita.length > 0" class="mb-3">
-              <h5>Fascie Orarie Occupate per il {{ prenotazione.data_prenotazione }}</h5>
-              <ul class="list-group">
-                <li v-for="slot in disponibilita" :key="slot.id" class="list-group-item">
-                  <strong>Orario:</strong> {{ slot.orario_inizio }} - {{ slot.orario_fine }}
-                </li>
-              </ul>
-            </div>
+  <h5>Date e orari occupati per il campo selezionato</h5>
+  <ul class="list-group">
+    <li v-for="slot in disponibilita" :key="slot.id" class="list-group-item">
+      <strong>Data:</strong> {{ formatDate(slot.data_prenotazione) }} <br />
+      <strong>Orario:</strong> {{ slot.orario_inizio }} - {{ slot.orario_fine }}
+    </li>
+  </ul>
+</div>
+
             <div v-else-if="prenotazione.campo_id && prenotazione.data_prenotazione" class="mb-3">
               <p class="text-success">Il campo è disponibile per l'intera giornata.</p>
             </div>
@@ -185,30 +187,51 @@ const Prenota = {
     
       // Verifica che i campi richiesti siano stati selezionati
       if (!this.prenotazione.campo_id || !this.prenotazione.data_prenotazione) {
-        console.log('Campo o data non selezionati.');
+        console.log('Devi selezionare un campo e una data.');
         return;
       }
     
-      console.log(`Verifica disponibilità per campo: ${this.prenotazione.campo_id} e data: ${this.prenotazione.data_prenotazione}`);
+      // Prepara i parametri di ricerca per la query
+      const campoId = this.prenotazione.campo_id;
+      const dataPrenotazione = this.prenotazione.data_prenotazione;
+    
+      console.log(
+        `Verifica disponibilità per Campo ID: ${campoId}, Data: ${dataPrenotazione}`
+      );
     
       try {
-        const response = await fetch(`/api/prenota?disponibilita&campo_id=${this.prenotazione.campo_id}&data_prenotazione=${this.prenotazione.data_prenotazione}`);
-        console.log('Risposta dal server:', response);
+        // Richiedi le fasce orarie occupate dal server
+        const response = await fetch(
+          `/api/prenota?disponibilita&campo_id=${campoId}&data_prenotazione=${dataPrenotazione}`
+        );
     
+        // Gestione della risposta del server
         if (response.ok) {
           const data = await response.json();
-          console.log('Dati di disponibilità ricevuti:', data);
-          this.disponibilita = data;
+          console.log('Dati ricevuti dal server:', data);
+    
+          if (data.length > 0) {
+            this.disponibilita = data; // Assegna le fasce orarie alla variabile di stato
+          } else {
+            console.log('Nessuna fascia oraria occupata trovata.');
+          }
         } else {
-          console.error("Errore nel recuperare la disponibilità: risposta non ok.");
-          console.error('Status Code:', response.status);
           const errorData = await response.json();
-          console.error('Dettagli errore:', errorData);
+          console.error('Errore nel recupero della disponibilità:', errorData);
+          this.notification = {
+            message: 'Errore nel recupero delle fasce orarie. Riprova più tardi.',
+            type: 'error',
+          };
         }
       } catch (error) {
-        console.error("Errore nella comunicazione con il server:", error);
+        console.error('Errore nella comunicazione con il server:', error);
+        this.notification = {
+          message: 'Impossibile verificare la disponibilità. Riprova più tardi.',
+          type: 'error',
+        };
       }
     },
+    
     formatDate(dateString) {
       const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
       return new Date(dateString).toLocaleDateString('it-IT', options);

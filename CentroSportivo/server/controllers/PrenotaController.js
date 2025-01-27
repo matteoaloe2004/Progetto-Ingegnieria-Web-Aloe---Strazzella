@@ -254,32 +254,41 @@ const getDisponibilita = (req, res) => {
     console.log("Parametro campo_id:", campo_id);
     console.log("Parametro data:", data);
   
-    if (!campo_id || !data) {
-      return res.status(400).json({ error: 'Tutti i parametri sono obbligatori.' });
+    if (!campo_id) {
+      return res.status(400).json({ error: 'Il parametro campo_id è obbligatorio.' });
     }
   
-    const query = `
+    // Query per filtrare per campo_id con controllo opzionale su data
+    let query = `
       SELECT 
         prenotazioni.id, 
         prenotazioni.orario_inizio, 
-        prenotazioni.orario_fine
+        prenotazioni.orario_fine, 
+        prenotazioni.data_prenotazione
       FROM prenotazioni
-      WHERE prenotazioni.campo_id = ? AND prenotazioni.data_prenotazione = ?
+      WHERE prenotazioni.campo_id = ?
     `;
-    
-    db.query(query, [campo_id, data], (err, results) => {
+
+    // Se il parametro `data` è presente, aggiungilo come filtro alla query
+    const queryParams = [campo_id];
+    if (data) {
+      query += " AND prenotazioni.data_prenotazione = ?";
+      queryParams.push(data);
+    }
+
+    db.query(query, queryParams, (err, results) => {
       if (err) {
         console.error('Errore nella query per recuperare la disponibilità:', err);
         return res.status(500).json({ error: 'Errore nel server durante la lettura della disponibilità.' });
       }
   
       if (results.length === 0) {
-        return res.status(404).json({ error: 'Nessuna disponibilità trovata per il campo e la data selezionati.' });
+        return res.status(404).json({ error: 'Nessuna disponibilità trovata per il campo selezionato.' });
       }
   
       res.json(results);
     });
-  };
+};
   
 module.exports = {
     getAllPrenotazioni,
