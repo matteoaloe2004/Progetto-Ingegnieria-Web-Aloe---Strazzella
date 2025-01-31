@@ -34,7 +34,7 @@ const Aboutus = {
         { question: "Posso prenotare un campo per uso privato?", answer: "Sì, puoi prenotare un campo per uso privato." },
         { question: "Posso prenotare un campo per uso commerciale?", answer: "Sì, puoi prenotare un campo per uso commerciale." },
         { question: "Posso prenotare un campo per uso associativo?", answer: "Sì, puoi prenotare un campo per uso associativo." },
-        { question: "Posso prenotare un campo per uso scolastico?", answer: "Sì, puoi prenotare un campo per uso scolastico. Inoltre, gli istituti scolastici possono prenotare il campo a un prezzo speciale." },
+        { question: "Posso prenotare un campo per uso scolastico?", answer: "Sì, puoi prenotare un campo per uso scolastico. Inoltre, gli istituti scolastici possono prenotare il campo per piu di 3 ore se necessario" },
         { question: "Come possiamo contattarvi e ottenere aiuto?", answer: "Per ottenere aiuto, puoi contattarci tramite email o telefonando al numero di telefono fornito || CentroSportivoUnibo@example.com  || Telefono: 0543 0000000 . Puoi anche chiedere aiuto per la prenotazione di un campo." }
       ]
     };

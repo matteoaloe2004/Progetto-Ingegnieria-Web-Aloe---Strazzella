@@ -14,7 +14,6 @@ const campi = {
                             <h5 class="card-title">{{ activity.nome }}</h5>
                             <h6 class="card-subtitle mb-2 text-muted">{{ activity.tipo }}</h6>
                             <p class="card-text">{{ activity.descrizione }}</p>
-                            <p class="card-text"><strong>Costo per ora:</strong> €{{ activity.costo_ora }}</p>
                         </div>
                     </div>
                 </div>

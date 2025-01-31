@@ -32,20 +32,19 @@ CREATE TABLE `campi` (
   `nome` varchar(50) NOT NULL,
   `tipo` varchar(50) NOT NULL,
   `descrizione` text DEFAULT NULL,
-  `costo_ora` decimal(10,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dump dei dati per la tabella `campi`
 --
 
-INSERT INTO `campi` (`id`, `nome`, `tipo`, `descrizione`, `costo_ora`) VALUES
-(1, 'Campo da Calcio 1', 'Calcio', 'Campo di calcio da 8 a 9 giocatori in erba sintetica.', 50.00),
-(2, 'Campo Tennis A', 'Tennis', 'Campo da tennis con illuminazione notturna.', 25.00),
-(3, 'Palestra Indoor', 'Palestra', 'Spazio indoor attrezzato per attività multiple.', 30.00),
-(4, 'Piscina Estiva', 'Piscina', 'Piscina all’aperto con vista panoramica.', 40.00),
-(5, 'Campo Basket', 'Basket', 'Campo regolamentare con parquet.', 35.00),
-(6, 'Campo Pallavolo', 'Pallavolo', 'Campo da pallavolo con parquet.', 30.00);
+INSERT INTO `campi` (`id`, `nome`, `tipo`, `descrizione`) VALUES
+(1, 'Campo da Calcio 1', 'Calcio', 'Campo di calcio da 8 a 9 giocatori in erba sintetica.'),
+(2, 'Campo Tennis A', 'Tennis', 'Campo da tennis con illuminazione notturna.'),
+(3, 'Palestra Indoor', 'Palestra', 'Spazio indoor attrezzato per attività multiple.'),
+(4, 'Piscina Estiva', 'Piscina', 'Piscina all’aperto con vista panoramica.'),
+(5, 'Campo Basket', 'Basket', 'Campo regolamentare con parquet.'),
+(6, 'Campo Pallavolo', 'Pallavolo', 'Campo da pallavolo con parquet.');
 
 -- --------------------------------------------------------
 
@@ -102,8 +101,6 @@ INSERT INTO `utenti` (`id`, `username`, `nome`, `cognome`, `password`, `email`, 
 (3, 'giovanni.bianchi', 'Giovanni', 'Bianchi', 'password123', 'giovanni.bianchi@gmail.com', '2025-01-17 14:20:00'),
 (4, 'anna.neri', 'Anna', 'Neri', 'password123', 'anna.neri@gmail.com', '2025-01-17 14:20:00'),
 (5, 'paolo.gialli', 'Paolo', 'Gialli', 'password123', 'paolo.gialli@gmail.com', '2025-01-17 14:20:00'),
-(20, 'HaloWassupp', 'matteo', 'Aloe', '$2b$10$/MuXO3ZxBUmGcFgYIuhhM.8Xqdf3GB.iHCetz7t1k0L/sLYXq7ARK', 'matteoaloe2004@libero.it', '2025-01-19 16:11:22'),
-(28, 'matteoAloe', 'matteo', 'marchiello', '$2b$10$XDwVaODB8xXIyfiQPlYUk.SwMawFuVdNmG7x7/8SuDYSPyxZAASqe', 'mgmt.halobeats@gmail.com', '2025-01-20 13:23:40');
 
 -- Creazione della tabella per l'archivio storico delle prenotazioni
 CREATE TABLE `prenotazioni_archivio` (
